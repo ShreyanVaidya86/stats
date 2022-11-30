@@ -10,7 +10,6 @@ import pylab
 from sklearn.linear_model import LinearRegression
 import sklearn.metrics
 import statsmodels.api as sm
-from collections import Counter
 
 #Read Dataset
 #mydataset= pd.read_csv(r'C:\\Users\\karen\\Documents\\Karen\\Canadá\\Lambton\\Academic\\Term 1\\BAM 1024 - Introduction to Statistical Analysis\\Project\\dogs_file.csv')
@@ -29,19 +28,10 @@ print("In ", season_mode, " dogs bite more.")
 #2. Which is the most aggressive dog breed? (Bar Chart)
 breed_mode = mydataset.loc[:,"Breed"].mode()
 print("The most aggressive breed is the ", breed_mode)
-print(Counter(mydataset['Breed']))
-title_type = mydataset.groupby('Breed').agg('count')
-print(title_type)
 
 #2.i. What is the most aggressive gender (Pie Chart)
 gender_mode = mydataset.loc[:,"Gender"].mode()
 print(gender_mode)
-#if gender_mode == 'M':
-#   print('The most aggressive gender is Masculine')
-#elif gender_mode == 'F':
-#   print('The most aggressive gender is Feminine')
-#else:
-#   print('The most aggressive is unknown')
 
 #2.ii. Which is the age at which dogs are more aggressive? (Bar Chart)
 age_mode = mydataset.loc[:,"Age"].mode()
