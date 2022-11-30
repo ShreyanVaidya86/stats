@@ -13,8 +13,8 @@ import statsmodels.api as sm
 from collections import Counter
 
 #Read Dataset
-mydataset= pd.read_csv(r'C:\\Users\\karen\\Documents\\Karen\\Canadá\\Lambton\\Academic\\Term 1\\BAM 1024 - Introduction to Statistical Analysis\\Project\\dogs_file.csv')
-#mydataset = pd.read_csv('https://raw.githubusercontent.com/karenalicia14/stats/ee576b1706f6ea141f36d45850f26027d4229955/superstore_train.csv'
+#mydataset= pd.read_csv(r'C:\\Users\\karen\\Documents\\Karen\\Canadá\\Lambton\\Academic\\Term 1\\BAM 1024 - Introduction to Statistical Analysis\\Project\\dogs_file.csv')
+mydataset = pd.read_csv('https://raw.githubusercontent.com/karenalicia14/stats/main/dogs_file.csv'
 #Let's answer our questions!'
 
 #TREND CHARTS
