@@ -10,45 +10,63 @@ import pylab
 from sklearn.linear_model import LinearRegression
 import sklearn.metrics
 import statsmodels.api as sm
+from collections import Counter
+import matplotlib.ticker as ticker
+import matplotlib.cm as cm
+import matplotlib as mpl
+from matplotlib.gridspec import GridSpec
 
 #Read Dataset
-#mydataset= pd.read_csv(r'C:\\Users\\karen\\Documents\\Karen\\Canadá\\Lambton\\Academic\\Term 1\\BAM 1024 - Introduction to Statistical Analysis\\Project\\dogs_file.csv')
 mydataset = pd.read_csv('https://raw.githubusercontent.com/karenalicia14/stats/main/dogs_file.csv')
-#Let's answer our questions!'
 
-#TREND CHARTS
-#1. Throughout the years has the dog bite declined? (Trend Line)
+### Setting Variables and additional dataframes for plots
+year_counter = Counter(mydataset['Year'])
+print(year_counter)                                                                         #Distribution of 'Year' column
+df_year_counter = pd.DataFrame.from_dict(year_counter, orient='index').reset_index()        #Convert counter into Pandas Dataframe
+year_df = df_year_counter.rename(columns={'index':'Year', 0:'Dog Bites'})                       #Rename columns of the dataframe
 
-#1.i. During which season do dogs bite more? (Bar Chart)
-season_mode = mydataset.loc[:,"Season"].mode()
-print("In ", season_mode, " dogs bite more.")
+breed_counter = Counter(mydataset['Breed'])                  #Distribution of 'Breed' column
+print(breed_counter)                                                                         #Distribution of 'Breed' column
+df_breed_counter = pd.DataFrame.from_dict(breed_counter, orient='index').reset_index()        #Convert counter into Pandas Dataframe
+breed_df = df_breed_counter.rename(columns={'index':'Breed', 0:'Bites by Breed'}) #Rename columns of the dataframe
+breed_df = breed_df.sort_values('Bites by Breed', ascending=True)
 
+season_counter= Counter(mydataset['Season'])                 #Distribution of 'Season' column
+print(season_counter)
+df_season_counter = pd.DataFrame.from_dict(season_counter, orient='index').reset_index()        #Convert counter into Pandas Dataframe
+season_df = df_season_counter.rename(columns={'index':'Season', 0:'Bites by Season'}) #Rename columns of the dataframe
+season_df = season_df.sort_values('Bites by Season')
 
-#BAR/PIE GRAPHS - MODE
-#2. Which is the most aggressive dog breed? (Bar Chart)
-breed_mode = mydataset.loc[:,"Breed"].mode()
-print("The most aggressive breed is the ", breed_mode)
+print(Counter(mydataset['Gender']))                 #Distribution of 'Gender' column
+gender = mydataset.groupby('Gender').agg('count')   #Grouping our data by the number of values for each ‘Gender’
+gender_labels = gender.ID.sort_values().index       #sorting the indexes for our aggregated types
+gender_counts = gender.ID.sort_values()             #sorting the counts for our aggregated types
 
-#2.i. What is the most aggressive gender (Pie Chart)
-gender_mode = mydataset.loc[:,"Gender"].mode()
-print(gender_mode)
+print(Counter(mydataset['CrossBreed']))                      #Distribution of 'Breed' column
+cross_breed = mydataset.groupby('CrossBreed').agg('count')   #Grouping our data by the number of values for each ‘CrossBreed’
+cross_breed_labels = cross_breed.ID.sort_values().index      #sorting the indexes for our aggregated types
+cross_breed_counts = cross_breed.ID.sort_values()            #sorting the counts for our aggregated types
 
-#2.ii. Which is the age at which dogs are more aggressive? (Bar Chart)
-age_mode = mydataset.loc[:,"Age"].mode()
-print("At  ", age_mode, " years, dogs become more aggressive")
+print(Counter(mydataset['SpayNeuter']))                      #Distribution of 'SpayNeuter' column
+spay_neuter = mydataset.groupby('SpayNeuter').agg('count')   #Grouping our data by the number of values for each ‘CrossBreed’
+spay_neuter_labels = cross_breed.ID.sort_values().index      #sorting the indexes for our aggregated types
+spay_neuter_counts = cross_breed.ID.sort_values()            #sorting the counts for our aggregated types
 
-#2.iii. Do dogs with mixed breeds tend to bite more? (Pie Chart)
-cross_breed = mydataset.groupby("CrossBreed")["Breed"].count().sort_values(ascending=False)
-print(cross_breed)
+########  Let's answer our questions!  #######
 
+#1. Throughout the years has the dog bite decreased?
+year_df.plot(x ='Year', y='Dog Bites', kind='line')
+plt.xlabel("Year", labelpad=15)
+plt.ylabel("Number of Bites", labelpad=15)
+plt.title("Number of Dog's Bites trough out the years", y=1.02, fontsize=22)
+plt.show()
 
-#HYPOTHESIS TESTING
-#3. Do neutered dogs bite less?
-#Ho = probability of neutered dog to bite = probability of non neutered dog to bite
-#Ha = probability of neutered dog to bite != probability of non neutered dog to bite
-
-#4. Which city has the highest number of dog bite vs least number of dog bites? (Back up question)
-city_bite = mydataset.groupby("Borough")["DateOfBite"].count().sort_values(ascending=False)
-city_bite_max = mydataset.groupby("Borough")["DateOfBite"].count().max()
-city_bite_min = mydataset.groupby("Borough")["DateOfBite"].count().min()
-print(city_bite)
+#1.i. During which season do dogs bite more?
+season_mode = mydataset.loc[:,"Season"].mode()        #Finding the mode in column Season
+print("In ", season_mode[0], " dogs bite more.")
+#Let's plot the information
+season_df.plot(x ='Season', y='Bites by Season', kind='bar')
+plt.xlabel("Season", labelpad=15)
+plt.ylabel("Number of Bites", labelpad=15)
+plt.title("Number of Bites by Season", y=1.02, fontsize=22)
+plt.show()
